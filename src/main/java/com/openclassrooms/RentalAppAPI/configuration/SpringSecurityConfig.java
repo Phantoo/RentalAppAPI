@@ -58,6 +58,7 @@ public class SpringSecurityConfig
             .authorizeHttpRequests(auth -> 
             {
                 auth.requestMatchers(OPENAPI_WHITELIST).permitAll();
+                auth.requestMatchers("/files/**").permitAll();
                 auth.requestMatchers("/auth/login").permitAll();
                 auth.requestMatchers("/auth/register").permitAll();
 

@@ -81,10 +81,18 @@ public class UserService
         return userRepository.findByEmail(username);
     }
 
-    // Returns a HiddenPasswordUser depending on the specified username
+    // Returns a SafeUser depending on the specified username
     public SafeUser getSafe(String username)
     {
         User user = userRepository.findByEmail(username);
+        SafeUser safeUser = modelMapper.map(user, SafeUser.class);
+        return safeUser;
+    }
+
+    // Returns a SafeUser depending on the specified id
+    public SafeUser getSafeById(Integer id)
+    {
+        User user = userRepository.findById(id).orElse(null);
         SafeUser safeUser = modelMapper.map(user, SafeUser.class);
         return safeUser;
     }

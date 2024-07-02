@@ -2,15 +2,17 @@ package com.openclassrooms.RentalAppAPI.models;
 
 import java.math.BigDecimal;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class RentalRequest 
+public class RentalCreationRequest 
 {
     private String name;
     private BigDecimal surface;
     private BigDecimal price;
-    private String picture;
+    private MultipartFile picture;
     private String description;
 }

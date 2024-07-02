@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.RentalAppAPI.models.Rental;
-import com.openclassrooms.RentalAppAPI.models.RentalRequest;
+import com.openclassrooms.RentalAppAPI.models.RentalCreationRequest;
+import com.openclassrooms.RentalAppAPI.models.RentalUpdateRequest;
+import com.openclassrooms.RentalAppAPI.models.User;
 import com.openclassrooms.RentalAppAPI.repositories.RentalRepository;
 
 @Service
@@ -31,9 +33,12 @@ public class RentalService
         return rentalRepository.findById(id).orElse(null);
     }
 
-    public Rental add(RentalRequest request)
+    public Rental add(RentalCreationRequest request, User owner, String pictureUrl)
     {
         Rental rental = modelMapper.map(request, Rental.class);
+
+        rental.setOwner(owner);
+        rental.setPictureUrl(pictureUrl);
 
         Date now = new Date();
         rental.setCreatedAt(new Timestamp(now.getTime()));
@@ -41,5 +46,20 @@ public class RentalService
 
         Rental addedRental = rentalRepository.save(rental);
         return addedRental;
+    }
+
+    public Rental update(RentalUpdateRequest request, Integer id)
+    {
+        // Update rental
+        Rental rental = findById(id);
+        modelMapper.map(request, rental);
+
+        // Set new update date
+        Date now = new Date();
+        rental.setUpdatedAt(new Timestamp(now.getTime()));
+
+        // Save updated rental
+        rentalRepository.save(rental);
+        return rental;
     }
 }

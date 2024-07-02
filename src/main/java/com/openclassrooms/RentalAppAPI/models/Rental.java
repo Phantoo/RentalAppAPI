@@ -3,6 +3,11 @@ package com.openclassrooms.RentalAppAPI.models;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +40,9 @@ public class Rental
     @Column(length = 2000)
     private String description;
 
+    @JsonProperty("owner_id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "owner_id")//, referencedColumnName = "id")
     private User owner;

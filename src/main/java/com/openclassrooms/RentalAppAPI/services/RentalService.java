@@ -28,7 +28,7 @@ public class RentalService
         return rentalRepository.findAll();
     }
 
-    public Rental findById(Integer id)
+    public Rental getById(Integer id)
     {
         return rentalRepository.findById(id).orElse(null);
     }
@@ -51,7 +51,7 @@ public class RentalService
     public Rental update(RentalUpdateRequest request, Integer id)
     {
         // Update rental
-        Rental rental = findById(id);
+        Rental rental = getById(id);
         modelMapper.map(request, rental);
 
         // Set new update date

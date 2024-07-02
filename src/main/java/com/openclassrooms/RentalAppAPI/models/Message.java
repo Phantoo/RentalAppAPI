@@ -1,6 +1,5 @@
 package com.openclassrooms.RentalAppAPI.models;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -20,32 +19,30 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "rentals")
+@Table(name = "messages")
 @Getter @Setter
-public class Rental 
+public class Message 
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
-
-    private BigDecimal surface;
-    
-    private BigDecimal price;
-
-    @Column(name = "picture")
-    private String pictureUrl;
-    
-    @Column(length = 2000)
-    private String description;
-
-    @JsonProperty("owner_id")
+    @JsonProperty("rental_id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
+    @JoinColumn(name = "rental_id")
+    private Rental rental;
+
+    @JsonProperty("user_id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(length = 2000)
+    private String message;
 
     @Column(name = "created_at")
     private Timestamp createdAt;

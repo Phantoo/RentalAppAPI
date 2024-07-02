@@ -69,7 +69,13 @@ public class UserService
         return savedUser;
     }
 
-    // Returns a User depending on the specified username
+    // Returns a User corresponding to the specified id
+    public User getById(Integer id)
+    {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    // Returns a User corresponding to the specified username
     public User get(String username)
     {
         return userRepository.findByEmail(username);

@@ -103,7 +103,7 @@ public class RentalsController
         // Upload picture and get its url
         MultipartFile file = request.getPicture();
         storageService.save(file);
-        String url = ucb.path("/files/" + file.getOriginalFilename()).build().toUriString();
+        String url = ucb.path(storageService.folderName + "/" + file.getOriginalFilename()).build().toUriString();
 
         // Add Rental
         rentalService.add(request, owner, url);

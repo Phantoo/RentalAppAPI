@@ -35,6 +35,7 @@ public class Rental
     private BigDecimal price;
 
     @Column(name = "picture")
+    @JsonProperty(value = "picture")
     private String pictureUrl;
     
     @Column(length = 2000)

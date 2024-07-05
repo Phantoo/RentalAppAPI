@@ -7,6 +7,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.openclassrooms.RentalAppAPI.models.Rental;
 import com.openclassrooms.RentalAppAPI.models.RentalCreationRequest;
+import com.openclassrooms.RentalAppAPI.models.RentalResponse;
 import com.openclassrooms.RentalAppAPI.models.RentalUpdateRequest;
 import com.openclassrooms.RentalAppAPI.models.User;
 import com.openclassrooms.RentalAppAPI.services.FileStorageService;
@@ -22,7 +23,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -45,6 +49,9 @@ public class RentalsController
     @Autowired
     private FileStorageService storageService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @GetMapping()
     @Operation(responses = {
         @ApiResponse(responseCode = "200", 
@@ -58,7 +65,10 @@ public class RentalsController
     })
     public ResponseEntity<?> getAll() 
     {
-        List<Rental> rentals = rentalService.findAll();
+        List<RentalResponse> rentals =  rentalService.findAll()
+            .stream()
+            .map(r -> modelMapper.map(r, RentalResponse.class))
+            .collect(Collectors.toList());        
         return ResponseEntity.ok(Map.of("rentals", rentals));
     }
     
@@ -78,7 +88,8 @@ public class RentalsController
     public ResponseEntity<?> get(@PathVariable Integer id)
     {
         Rental rental = rentalService.getById(id);
-        return ResponseEntity.ok(rental);
+        RentalResponse response = modelMapper.map(rental, RentalResponse.class);
+        return ResponseEntity.ok(response);
     }
 
 
